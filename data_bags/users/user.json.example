@@ -1,0 +1,8 @@
+{
+  "id": "your_id",
+  "username": "your_user",
+  "group": "your_group",
+  "home": "your_home_dir",
+  "shell": "/bin/bash",
+  "ssh_key": "your public ssh key"
+}

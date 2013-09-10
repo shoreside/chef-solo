@@ -1,0 +1,6 @@
+{
+  "id": "app_id",
+  "certificate": "your cert",
+  "key": "your private key",
+  "chain": "your ca-bundle"
+}
