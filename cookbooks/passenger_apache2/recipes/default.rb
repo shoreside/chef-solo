@@ -40,7 +40,8 @@ end
 
 ruby_block "reload_ruby" do
   block do
-    node.load_attribute_by_short_filename('default', 'passenger_apache2')
+    # node.load_attribute_by_short_filename('default', 'passenger_apache2')
+    node.include_attribute('default', 'passenger_apache2')
   end
 
   action :nothing
