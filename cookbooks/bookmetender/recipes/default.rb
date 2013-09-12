@@ -54,7 +54,7 @@ template app_db_sql_path do
   owner user['username']
   group user['group']
   mode '0600'
-  source 'app_db.sql.erb'
+  source 'club_db.sql.erb'
 end
 
 execute "mysql-install-user-privileges" do
