@@ -30,7 +30,7 @@ if platform_family?('debian')
 
   template "#{node['apache']['dir']}/mods-available/mod_rails.load" do
     cookbook 'passenger_apache2'
-    source 'passenger.load.erb'
+    source 'mod_rails.load.erb'
     owner 'root'
     group 'root'
     mode 0644
@@ -38,7 +38,7 @@ if platform_family?('debian')
 
   template "#{node['apache']['dir']}/mods-available/mod_rails.conf" do
     cookbook 'passenger_apache2'
-    source 'passenger.conf.erb'
+    source 'mod_rails.conf.erb'
     owner 'root'
     group 'root'
     mode 0644
