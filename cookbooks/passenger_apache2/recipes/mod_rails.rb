@@ -45,6 +45,6 @@ if platform_family?('debian')
   end
 end
 
-apache_module 'passenger' do
+apache_module 'mod_rails' do
   module_path node['passenger']['module_path']
 end
