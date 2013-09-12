@@ -48,7 +48,7 @@ include_recipe "bookmetender::ssl"
 end
 
 # create app database in mysql and grant rights to user bmt
-app_db_sql_path = "#{user['home']}/apps/club/app_db.sql"
+app_db_sql_path = "#{user['home']}/apps/club/club_db.sql"
 
 template app_db_sql_path do
   owner user['username']
