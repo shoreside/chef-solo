@@ -54,9 +54,6 @@ template app_db_sql_path do
   owner user['username']
   group user['group']
   mode '0600'
-  database node['app']['club']['database']
-  mysql_user node['app']['club']['mysql_user']
-  mysql_password node['app']['club']['mysql_password']
   source 'app_db.sql.erb'
 end
 
