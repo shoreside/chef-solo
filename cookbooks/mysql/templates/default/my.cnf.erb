@@ -57,8 +57,12 @@ skip-name-resolve
 <%- end %>
 
 # Charset and Collation
+default-character-set = <%= node['mysql']['default-character-set'] %>
 character-set-server = <%= node['mysql']['tunable']['character-set-server'] %>
 collation-server     = <%= node['mysql']['tunable']['collation-server'] %>
+init_connect = 'SET collation_connection = <%= node['mysql']['tunable']['collation-server'] %>'
+init_connect = 'SET NAMES <%= node['mysql']['default-character-set'] %>'
+
 <%- if node['mysql']['tunable']['lower_case_table_names'] %>
 lower_case_table_names = <%= node['mysql']['tunable']['lower_case_table_names'] %>
 <%- end %>

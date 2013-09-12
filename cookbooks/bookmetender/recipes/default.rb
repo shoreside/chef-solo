@@ -46,3 +46,22 @@ include_recipe "bookmetender::ssl"
     create "644 root root"
   end
 end
+
+# create app database in mysql and grant rights to user bmt
+app_db_sql_path = "#{user['home']}/apps/club/app_db.sql"
+
+template app_db_sql_path do
+  owner user['username']
+  group user['group']
+  mode '0600'
+  database node['app']['club']['database']
+  mysql_user node['app']['club']['mysql_user']
+  mysql_password node['app']['club']['mysql_password']
+  source 'app_db.sql.erb'
+end
+
+execute "mysql-install-user-privileges" do
+  command %Q["#{node['mysql']['mysql_bin']}" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }'#{node['mysql']['server_root_password']}' < "#{app_db_sql_path}"]
+  action :nothing
+  subscribes :run, resources("template[#{app_db_sql_path}]"), :immediately
+end
