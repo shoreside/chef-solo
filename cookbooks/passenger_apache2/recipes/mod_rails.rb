@@ -25,24 +25,24 @@
 include_recipe 'passenger_apache2'
 
 if platform_family?('debian')
-  template "#{node['apache']['dir']}/mods-available/passenger.load" do
+  node.default['passenger']['root_path'] = "#{languages['ruby']['gems_dir']}/gems/passenger-#{node['passenger']['version']}"
+  node.default['passenger']['module_path'] = "#{node['passenger']['root_path']}/buildout/apache2/mod_passenger.so"
+
+  template "#{node['apache']['dir']}/mods-available/mod_rails.load" do
     cookbook 'passenger_apache2'
     source 'passenger.load.erb'
     owner 'root'
     group 'root'
-    mode 0755
+    mode 0644
   end
-end
 
-# Allows proper default path if root path was overridden
-node.default['passenger']['module_path'] = "#{node['passenger']['root_path']}/ext/apache2/mod_passenger.so"
-
-template "#{node['apache']['dir']}/mods-available/passenger.conf" do
-  cookbook 'passenger_apache2'
-  source 'passenger.conf.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
+  template "#{node['apache']['dir']}/mods-available/mod_rails.conf" do
+    cookbook 'passenger_apache2'
+    source 'passenger.conf.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+  end
 end
 
 apache_module 'passenger' do
