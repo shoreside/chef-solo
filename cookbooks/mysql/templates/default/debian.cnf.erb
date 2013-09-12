@@ -3,6 +3,7 @@ host     = localhost
 user     = debian-sys-maint
 password = <%= node['mysql']['server_debian_password'] %>
 socket   = <%= node['mysql']['socket'] %>
+default-character-set = <%= node['mysql']['default-character-set'] %>
 
 [mysql_upgrade]
 host     = localhost
