@@ -25,7 +25,7 @@
 include_recipe 'passenger_apache2'
 
 if platform_family?('debian')
-  node.default['passenger']['root_path'] = "#{languages['ruby']['gems_dir']}/gems/passenger-#{node['passenger']['version']}"
+  node.default['passenger']['root_path'] = "#{node['languages']['ruby']['gems_dir']}/gems/passenger-#{node['passenger']['version']}"
   node.default['passenger']['module_path'] = "#{node['passenger']['root_path']}/buildout/apache2/mod_passenger.so"
 
   template "#{node['apache']['dir']}/mods-available/mod_rails.load" do
