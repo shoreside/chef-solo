@@ -61,4 +61,10 @@ unless node['app']['db_user'].nil?
     action :nothing
     subscribes :run, resources("template[#{app_db_sql_path}]"), :immediately
   end
+
+  execute "cleanup-after-mysql-install-user-privileges" do
+    command "rm #{app_db_sql_path}"
+    action :nothing
+    subscribes :run, "execute[mysql-install-user-privileges]", :delayed
+  end
 end
