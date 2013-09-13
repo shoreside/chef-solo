@@ -50,4 +50,7 @@ end
 execute "passenger_module" do
   command "passenger-install-apache2-module _#{node['passenger']['version']}_ --auto"
   creates node['passenger']['module_path']
+  not_if do
+    File.exists?(node['passenger']['module_path'])
+  end
 end
