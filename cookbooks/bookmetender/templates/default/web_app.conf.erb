@@ -18,7 +18,7 @@
     # MultiViews must be turned off.
     Options -MultiViews
   </directory>
-  <% unless @params[:customers_dir].nil? && @params[:customers_dir].empty? -%>
+  <% unless @params[:customers_dir].nil? || @params[:customers_dir].empty? -%>
   <Directory <%= @params[:docroot] %>/<%= @params[:customers_dir]%>>
     Order allow,deny
     Deny from all

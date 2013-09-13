@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS times_production DEFAULT CHARACTER SET <%= node['mysql']['default-character-set'] %> DEFAULT COLLATE <%= node['mysql']['tunable']['collation-server']%>;
+GRANT ALL PRIVILEGES ON times_production.* TO <%= node['app']['db_user'] %>@localhost IDENTIFIED BY '<%= node['app']['db_password'] %>' WITH GRANT OPTION;

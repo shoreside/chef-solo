@@ -13,16 +13,16 @@ end
 
 # add vhosts to apache
 node['app']['vhosts'].each do |vhost|
-  use_ssl = vhost.include? 'ssl'
-  error_log = "#{node['apache']['log_dir']}/#{vhost}-error.log"
-  access_log = "#{node['apache']['log_dir']}/#{vhost}-access.log"
+  use_ssl = vhost['name'].include? 'ssl'
+  error_log = "#{node['apache']['log_dir']}/#{vhost['name']}-error.log"
+  access_log = "#{node['apache']['log_dir']}/#{vhost['name']}-access.log"
   
   # apache vhost conf
-  web_app vhost do
+  web_app vhost['name'] do
     ssl use_ssl
     enable false
     cookbook 'bookmetender'
-    server_name use_ssl ? "#{node['fqdn']}:443" : "#{node['fqdn']}"
+    server_name use_ssl ? "#{vhost['server_name']}:443" : "#{vhost['server_name']}"
     docroot "#{user['home']}/apps/#{app}/current/public"
     error_log_path error_log
     custom_log_path access_log
@@ -36,7 +36,7 @@ node['app']['vhosts'].each do |vhost|
   end
 
   # logrotate for vhost
-  logrotate_app vhost do
+  logrotate_app vhost['name'] do
     cookbook "logrotate"
     path [error_log, access_log]
     frequency "daily"
