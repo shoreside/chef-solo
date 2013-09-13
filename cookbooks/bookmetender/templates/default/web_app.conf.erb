@@ -1,11 +1,10 @@
 <VirtualHost <%= @params[:ssl] ? '*:443' : '*:80'%>>
-  <% if @params[:ssl] %>
+  <% if @params[:ssl] -%>
   SSLEngine On
   SSLCertificateFile <%= @params[:ssl_certificate_file] %>
   SSLCertificateKeyFile <%= @params[:ssl_certificate_key_file] %>
   SSLCertificateChainFile <%= @params[:ssl_certificate_chain_file] %>
-  <% end %>
-  
+  <% end -%>
   ServerName <%= @params[:server_name] %>
   DocumentRoot <%= @params[:docroot] %>
   ErrorLog <%= @params[:error_log_path] %>
@@ -19,8 +18,10 @@
     # MultiViews must be turned off.
     Options -MultiViews
   </directory>
+  <% unless @params[:customers_dir].nil? && @params[:customers_dir].empty? -%>
   <Directory <%= @params[:docroot] %>/<%= @params[:customers_dir]%>>
     Order allow,deny
     Deny from all
   </Directory>
+  <% end -%>
 </VirtualHost>

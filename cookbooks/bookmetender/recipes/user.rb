@@ -1,4 +1,4 @@
-user = data_bag_item('users', 'bmt')
+user = data_bag_item('users', node['app']['user'])
 
 user user['username'] do
   group user['group']
