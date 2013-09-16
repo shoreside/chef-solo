@@ -15,25 +15,17 @@ directory "#{user['home']}/.ssh" do
   recursive true
 end
 
-# generate ssh keys
+# generate user ssh keys
 execute "generate-ssh-skys-for-user" do
   creates "#{user['home']}/.ssh/id_rsa.pub"
-  command "ssh-keygen -t rsa -q -f #{user['home']}/.ssh/id_rsa -P \"\""
+  command "ssh-keygen -t rsa -q -f #{user['home']}/.ssh/id_rsa -P \"\" && chown #{user['username']} #{user['home']}/.ssh/id_rsa* && chgrp #{user['group']} #{user['home']}/.ssh/id_rsa*"
   subscribes :create, "user[user['username']]", :immediately
   not_if do
     File.exists?("#{user['home']}/.ssh/id_rsa.pub")
   end
 end
-execute "chown for ssh keys" do
-  command "chown #{user['username']} #{user['home']}/.ssh/id_rsa.pub && chown #{user['username']} #{user['home']}/.ssh/id_rsa"
-  command "chgrp #{user['group']} #{user['home']}/.ssh/id_rsa.pub && chgrp #{user['group']} #{user['home']}/.ssh/id_rsa"
-  only_if do
-    File.exists?("#{user['home']}/.ssh/id_rsa.pub")
-  end
-  subscribes :run, "execute[generate-ssh-skys-for-user]", :delayed
-end
 
-# add ssh key to allow this user to deploy
+# add developers local machine ssh key to allow this user to deploy
 unless user['ssh_key'].nil? || user['ssh_key'].empty?
   # FILE ~/.ssh/authorized_keys
   template "#{user['home']}/.ssh/authorized_keys" do
