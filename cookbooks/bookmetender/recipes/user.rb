@@ -16,12 +16,13 @@ directory "#{user['home']}/.ssh" do
 end
 
 # generate user ssh keys
+user_ssh_key_file = "#{user['home']}/.ssh/id_rsa"
 execute "generate-ssh-skys-for-user" do
-  creates "#{user['home']}/.ssh/id_rsa.pub"
-  command "ssh-keygen -t rsa -q -f #{user['home']}/.ssh/id_rsa -P \"\" && chown #{user['username']} #{user['home']}/.ssh/id_rsa* && chgrp #{user['group']} #{user['home']}/.ssh/id_rsa*"
+  creates "#{user_ssh_key_file}.pub"
+  command "ssh-keygen -t rsa -q -f #{user_ssh_key_file} -P \"\" && chown #{user['username']} #{user_ssh_key_file}* && chgrp #{user['group']} #{user_ssh_key_file}*"
   subscribes :create, "user[user['username']]", :immediately
   not_if do
-    File.exists?("#{user['home']}/.ssh/id_rsa.pub")
+    File.exists?("#{user_ssh_key_file}.pub")
   end
 end
 
@@ -41,4 +42,14 @@ end
 directory "#{user['home']}/apps" do
   owner user['username']
   group user['group']
+end
+
+# add ssh key of the git server to user's known_hosts file
+user_known_hosts = "#{user['home']}/.ssh/known_hosts"
+execute "add-git-servers-ssh-key-to-users-known-hosts" do
+  creates user_known_hosts
+  command "ssh-keyscan -t rsa #{node['app']['git_server']} > #{user_known_hosts} && chown #{user['username']} #{user_known_hosts} && chgrp #{user['group']} #{user_known_hosts}"
+  not_if do
+    File.exists? user_known_hosts
+  end
 end
