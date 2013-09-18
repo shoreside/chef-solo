@@ -12,25 +12,31 @@ directory certificates_dir do
 end
 
 # crt file
-file "#{File.join certificates_dir, certificate_file}" do
+crt_path = "#{File.join certificates_dir, certificate_file}"
+file crt_path do
   owner 'root'
   group 'root'
   mode '0644'
   content ssl['certificate']
+  not_if { File.exists? crt_path }
 end
 
 # key file
-file "#{File.join certificates_dir, key_file}" do
+key_path = "#{File.join certificates_dir, key_file}"
+file key_path do
   owner 'root'
   group 'root'
   mode '0600'
   content ssl['key']
+  not_if { File.exists? key_path }
 end
 
 # chain file
-file "#{File.join certificates_dir, chain_file}" do
+chain_path = "#{File.join certificates_dir, chain_file}"
+file chain_path do
   owner 'root'
   group node['ssl']['group'].to_s
   mode '0640'
   content ssl['chain']
+  not_if { File.exists? chain_path }
 end
