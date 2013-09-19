@@ -10,3 +10,11 @@ gem_package 'bundler' do
     action :install
   end
 end
+
+# remove unused package
+package "isc-dhcp-client" do
+  action :purge
+end
+
+# add some Intrusion Prevention System
+package "fail2ban"
